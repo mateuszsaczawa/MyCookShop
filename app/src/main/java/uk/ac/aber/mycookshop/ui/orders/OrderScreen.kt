@@ -9,7 +9,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import uk.ac.aber.mycookshop.hardcodedData.OrderList
 import uk.ac.aber.mycookshop.ui.navigation.TopLevelScaffold
+import uk.ac.aber.mycookshop.ui.Production.WasteBoard
+import uk.ac.aber.mycookshop.ui.screens.elements.orders.OrderScrollableColumn
 
 
 @Composable
@@ -33,7 +36,8 @@ fun OrderScreen(
                     .fillMaxSize()
                     .padding(7.dp)
             ) {
-
+                WasteBoard()
+                OrderScrollableColumn(OrderList.orders, 1)
             }
 
         }

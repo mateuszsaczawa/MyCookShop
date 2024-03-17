@@ -7,12 +7,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import uk.ac.aber.mycookshop.clock.Clock
+import uk.ac.aber.mycookshop.hardcodedData.OrderList
 import uk.ac.aber.mycookshop.hardcodedData.ProductList.productList
 import uk.ac.aber.mycookshop.hardcodedData.ProductModel
 import uk.ac.aber.mycookshop.ui.navigation.TopLevelScaffold
-import uk.ac.aber.mycookshop.ui.screens.elements.Production.ProductRows
-import uk.ac.aber.mycookshop.ui.screens.elements.Production.WasteBoard
-import uk.ac.aber.mycookshop.ui.screens.elements.clock.GameClock
+import uk.ac.aber.mycookshop.ui.Production.ProductRows
+import uk.ac.aber.mycookshop.ui.Production.WasteBoard
+import uk.ac.aber.mycookshop.ui.orders.OrderBar
 import uk.ac.aber.mycookshop.viewModel.ProductionViewModel
 
 @Composable
@@ -43,7 +45,7 @@ fun ProductionScreen(
                 modifier = Modifier
                     .padding(1.dp)
             ) {
-                GameClock()
+                Clock(productionViewModel)
                 Column(
                     modifier = Modifier
                         .fillMaxHeight(0.8f)
@@ -51,6 +53,15 @@ fun ProductionScreen(
                 ){
                     WasteBoard()
                     ProductRows(productionViewModel, subList)
+                }
+                Column(
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .padding(start = 6.dp, end = 6.dp)
+//                        .border(width = 2.dp, color = Color.Black)
+//                        .padding(6.dp)
+                ){
+                    OrderBar(OrderList.orders)
                 }
             }
         }

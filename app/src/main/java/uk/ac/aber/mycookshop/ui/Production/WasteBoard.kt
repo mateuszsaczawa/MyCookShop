@@ -1,4 +1,4 @@
-package uk.ac.aber.mycookshop.ui.screens.elements.Production
+package uk.ac.aber.mycookshop.ui.Production
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

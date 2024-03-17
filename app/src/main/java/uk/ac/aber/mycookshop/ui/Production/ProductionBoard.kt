@@ -1,4 +1,4 @@
-package uk.ac.aber.mycookshop.ui.screens.elements.Production
+package uk.ac.aber.mycookshop.ui.Production
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn

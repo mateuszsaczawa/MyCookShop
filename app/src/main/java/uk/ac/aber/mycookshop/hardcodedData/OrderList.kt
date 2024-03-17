@@ -8,15 +8,15 @@ data class Order(
 
 object OrderList {
     val orders = listOf(
-        Order("10 PLN", "1", listOf("Pizza", "Cola")),
-        Order("15 PLN", "2", listOf("Burger", "Fries")),
-        Order("8 PLN", "3", listOf("Salad")),
-        Order("20 PLN", "4", listOf("Steak", "Wine")),
-        Order("6 PLN", "5", listOf("Ice Cream")),
-        Order("12 PLN", "6", listOf("Spaghetti", "Soda")),
-        Order("14 PLN", "7", listOf("Sushi", "Green Tea")),
-        Order("16 PLN", "8", listOf("Fish and Chips")),
-        Order("11 PLN", "9", listOf("Sandwich", "Juice")),
-        Order("9 PLN", "10", listOf("Soup", "Bread"))
+        Order("10", "1", listOf("4 pieces of Chicken", "Zinger burger","4 pieces of Chicken", "Zinger burger","4 pieces of Chicken", "Zinger burger","4 pieces of Chicken", "Zinger burger","4 pieces of Chicken", "Zinger burger")),
+        Order("15", "2", listOf("Fillet Burger", "Fries")),
+        Order("8", "3", listOf("24 Mini-fillets")),
+        Order("20", "4", listOf("Ice cream", "Cookie")),
+        Order("6", "5", listOf("Ice Cream")),
+        Order("12", "6", listOf("Spaghetti", "Soda")),
+        Order("14", "7", listOf("Sushi", "Green Tea")),
+        Order("16", "8", listOf("Fish and Chips")),
+        Order("11", "9", listOf("Sandwich", "Juice")),
+        Order("9", "10", listOf("Soup", "Bread"))
     )
 }

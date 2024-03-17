@@ -1,4 +1,4 @@
-package uk.ac.aber.mycookshop.ui.screens.elements.clock
+package uk.ac.aber.mycookshop.clock
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -8,21 +8,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.delay
-import uk.ac.aber.mycookshop.hardcodedData.GameTime
+import uk.ac.aber.mycookshop.ui.clock.model.GameTime
+import uk.ac.aber.mycookshop.viewModel.ProductionViewModel
 
 
 @Composable
-fun GameClock() {
-    var gameTime by remember { mutableStateOf(GameTime()) }
-
+fun Clock(productionViewModel: ProductionViewModel) {
+    val timerValue by productionViewModel.timer.collectAsState()
 
     val list = listOf("Slow", "Normal", "Fast")
     var expanded by remember { mutableStateOf(false) }
     val currentValue = remember { mutableStateOf(list[1]) }
-
-    GameClockUpdater(gameTime)
 
     Row(
         modifier = Modifier
@@ -31,10 +28,10 @@ fun GameClock() {
         horizontalArrangement = Arrangement.SpaceAround
     ) {
         Text(
-            text = "Day: ${gameTime.getDay()}",
+            text = "Day: ${timerValue.getDay()}",
             textAlign = TextAlign.Start)
         Text(
-            text = secondsToTime(gameTime.getPlayTimeSeconds()),
+            text = secondsToTime(timerValue.getPlayTimeSeconds()),
             textAlign = TextAlign.Center
         )
         // Dropdown menu for Multiplier
@@ -59,6 +56,7 @@ fun GameClock() {
                         onClick = {
                             currentValue.value = it
                             expanded = false
+
                         }
                     )
                 }
@@ -72,7 +70,7 @@ fun GameClockUpdater(gameTime: GameTime) {
     LaunchedEffect(Unit) {
         while (true) {
             withFrameNanos {
-                gameTime.updatePlayTime()
+                gameTime.updatePlayDay()
             }
             delay(1000)
         }
@@ -80,15 +78,10 @@ fun GameClockUpdater(gameTime: GameTime) {
 }
 
 @Composable
-fun secondsToTime(seconds: Long): String {
+fun  secondsToTime(seconds: Long): String {
     val hours = seconds / 3600
     val minutes = (seconds % 3600) / 60
-    val formattedTime = String.format("%02d:%02d", hours, minutes)
+    val secondsAmount = seconds % 60
+    val formattedTime = String.format("%02d:%02d:%02d", hours, minutes, secondsAmount)
     return formattedTime
-}
-
-@Composable
-@Preview
-fun GameClockPreview() {
-    GameClock()
 }

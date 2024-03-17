@@ -1,4 +1,4 @@
-package uk.ac.aber.mycookshop.ui.screens.elements.Production
+package uk.ac.aber.mycookshop.ui.Production
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -191,6 +191,8 @@ fun ProductRow(
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 Text(text = "Amount")
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(text = "Status")
                 Spacer(modifier = Modifier.width(5.dp))
                 Text(text = "Expiry Time")
             }
