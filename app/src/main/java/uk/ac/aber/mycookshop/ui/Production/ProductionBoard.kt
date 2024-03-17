@@ -22,9 +22,9 @@ fun ProductRows(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        items.forEach { index ->
+        items.forEach { product ->
             item {
-                ProductRow(productionViewModel, index)
+                ProductRow(productionViewModel, product)
             }
         }
 

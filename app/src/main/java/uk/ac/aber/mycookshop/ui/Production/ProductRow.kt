@@ -18,6 +18,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -25,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import uk.ac.aber.mycookshop.hardcodedData.ProductModel
+import uk.ac.aber.mycookshop.model.CallQueue
 import uk.ac.aber.mycookshop.ui.theme.AutoResizedText
 import uk.ac.aber.mycookshop.ui.theme.light_productionBox
 import uk.ac.aber.mycookshop.viewModel.ProductionViewModel
@@ -36,8 +39,11 @@ fun ProductRow(
     product: ProductModel
 ) {
     var isExpanded by remember { mutableStateOf(false) }
-    var callAmount by remember { mutableStateOf("") }
+    var callAmount by remember { mutableStateOf(0) }
 
+    val focusManager = LocalFocusManager.current
+
+    val callQueue = CallQueue
 
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -65,17 +71,14 @@ fun ProductRow(
                 )
             }
             Spacer(modifier = Modifier.weight(0.05f))
-            Column(
-                modifier = Modifier.weight(0.2f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                TextField(
-                    value = callAmount,
-                    onValueChange = { value ->
-                        if (value.length <= 2) {
-                            callAmount = value.filter { it.isDigit() }
-                        }
-                    },
+
+            TextField(
+                value = if (callAmount == 0) "" else callAmount.toString(),
+                onValueChange = { value ->
+                    val newValue = value.filter { it.isDigit() }.take(2) // Ograniczenie do dwóch cyfr
+                    callAmount = newValue.toIntOrNull() ?: 0
+                },
+                singleLine = true,
                     modifier = Modifier
                         .width(80.dp)
                         .height(50.dp),
@@ -85,20 +88,16 @@ fun ProductRow(
                     ),
                     textStyle = TextStyle(fontSize = 12.sp, textAlign = TextAlign.Center),
                     shape = RoundedCornerShape(10.dp),
-                    placeholder = {
-                        Text(
-                        modifier = Modifier,
-                        text = "To cook: 0",
-                        fontSize = 8.sp
-                    )
-                    },
                     keyboardActions = KeyboardActions(
                         onDone = {
+                            productionViewModel.addNewCall(product, callAmount)
+                            focusManager.clearFocus()
+                            callAmount = 0
                         },
 
                         )
                 )
-            }
+
             Spacer(modifier = Modifier.weight(0.05f))
             Box(
                 modifier = Modifier.weight(0.2f),
@@ -112,10 +111,13 @@ fun ProductRow(
                         .clickable { }
                         .height(50.dp)
                         .width(70.dp)
-                        .wrapContentHeight(),
+                        .wrapContentHeight()
+                        .clickable {
+                            productionViewModel.addNewCall(product, callAmount)
+                            focusManager.clearFocus()
+                            callAmount = 0
+                        },
                     textAlign = TextAlign.Center
-
-
                 )
             }
             Box(
@@ -203,17 +205,9 @@ fun ProductRow(
                     .align(Alignment.CenterHorizontally),
                 color = Color.Black,
             )
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                Text(text = "20")
-                Spacer(modifier = Modifier.width(5.dp))
-                Text(text = "15:24")
-            }
+            CallQueueList(productionViewModel, product)
         }
     }
     Spacer(modifier = Modifier.height(5.dp))
 }
+
