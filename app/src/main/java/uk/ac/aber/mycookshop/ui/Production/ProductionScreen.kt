@@ -1,8 +1,12 @@
 package uk.ac.aber.mycookshop.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,6 +28,8 @@ fun ProductionScreen(
     name : String
 ) {
     val coroutineScope = rememberCoroutineScope()
+
+    val isAlertOpen = productionViewModel.isAlertDialogOpen.collectAsState().value
 
     val subList: List<ProductModel> = when {
         name == "cook" -> productList.subList(0, 7)
@@ -50,7 +56,7 @@ fun ProductionScreen(
                     modifier = Modifier
                         .fillMaxHeight(0.8f)
                         .padding(6.dp)
-                ){
+                ) {
                     WasteBoard()
                     ProductRows(productionViewModel, subList)
                 }
@@ -60,10 +66,24 @@ fun ProductionScreen(
                         .padding(start = 6.dp, end = 6.dp)
 //                        .border(width = 2.dp, color = Color.Black)
 //                        .padding(6.dp)
-                ){
+                ) {
                     OrderBar(OrderList.orders)
                 }
             }
+        }
+        if (isAlertOpen) {
+            AlertDialog(
+                onDismissRequest = { productionViewModel.setAlertDialogOpen(false) },
+                title = { Text("New day") },
+                text = { Text("Congratulation you finish day " + (productionViewModel.gameTime.value.getDay()-1)) },
+                confirmButton = {
+                    Button(
+                        onClick = { productionViewModel.setAlertDialogOpen(false) }
+                    ) {
+                        Text("Start next day")
+                    }
+                }
+            )
         }
     }
 }

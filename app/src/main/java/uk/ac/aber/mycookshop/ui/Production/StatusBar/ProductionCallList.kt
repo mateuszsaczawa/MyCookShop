@@ -28,14 +28,17 @@ fun CallQueueList(productionViewModel: ProductionViewModel, product: ProductMode
         if (allCalls.isNotEmpty()) {
             allCalls.forEach { call ->
 
-                CallItem(call)
+                CallItem(call, productionViewModel)
 
             }
         }
     }
 }
 @Composable
-fun secondsToTimeCall(seconds: Long): String {
+fun secondsToTimeCall(seconds: Long?): String {
+
+    seconds ?: return "" // Jeśli seconds jest null, zwróć pusty ciąg znaków
+
     val hours = seconds / 3600
     val minutes = (seconds % 3600) / 60
     val secondsAmount = seconds % 60

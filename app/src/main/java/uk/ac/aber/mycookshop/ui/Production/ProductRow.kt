@@ -90,9 +90,11 @@ fun ProductRow(
                     shape = RoundedCornerShape(10.dp),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            productionViewModel.addNewCall(product, callAmount)
-                            focusManager.clearFocus()
-                            callAmount = 0
+
+                                productionViewModel.addNewCall(product, callAmount)
+                                focusManager.clearFocus()
+                                callAmount.toString()
+
                         },
 
                         )
@@ -114,6 +116,7 @@ fun ProductRow(
                         .wrapContentHeight()
                         .clickable {
                             productionViewModel.addNewCall(product, callAmount)
+
                             focusManager.clearFocus()
                             callAmount = 0
                         },

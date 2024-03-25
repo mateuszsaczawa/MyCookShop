@@ -1,9 +1,6 @@
 package uk.ac.aber.mycookshop.ui.orders
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -23,7 +20,9 @@ fun OrderBar(orders: List<Order>) {
     ) {
         orders.forEach { index ->
             item {
+                Spacer(modifier = Modifier.width(4.dp))
                 OrderCardMin(index)
+
             }
 
 

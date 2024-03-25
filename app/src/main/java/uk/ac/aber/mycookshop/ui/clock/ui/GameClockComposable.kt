@@ -15,11 +15,13 @@ import uk.ac.aber.mycookshop.viewModel.ProductionViewModel
 
 @Composable
 fun Clock(productionViewModel: ProductionViewModel) {
-    val timerValue by productionViewModel.timer.collectAsState()
+    val gameTime by productionViewModel.gameTime.collectAsState()
+    val gameTimeSeconds by productionViewModel.timer.collectAsState()
 
     val list = listOf("Slow", "Normal", "Fast")
     var expanded by remember { mutableStateOf(false) }
     val currentValue = remember { mutableStateOf(list[1]) }
+
 
     Row(
         modifier = Modifier
@@ -28,10 +30,10 @@ fun Clock(productionViewModel: ProductionViewModel) {
         horizontalArrangement = Arrangement.SpaceAround
     ) {
         Text(
-            text = "Day: ${timerValue.getDay()}",
+            text = "Day: ${gameTime.getDay()}",
             textAlign = TextAlign.Start)
         Text(
-            text = secondsToTime(timerValue.getPlayTimeSeconds()),
+            text = secondsToTime(gameTimeSeconds),
             textAlign = TextAlign.Center
         )
         // Dropdown menu for Multiplier
@@ -54,6 +56,7 @@ fun Clock(productionViewModel: ProductionViewModel) {
                             textAlign = TextAlign.End
                         ) },
                         onClick = {
+                            productionViewModel.changeMultiplier(it)
                             currentValue.value = it
                             expanded = false
 

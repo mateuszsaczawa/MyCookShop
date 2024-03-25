@@ -7,7 +7,7 @@ import uk.ac.aber.mycookshop.model.Section
 object ProductList {
     val productList = listOf(
         ProductModel("Chicken", 20*60, 0.01, 1.2, ProductType.CHICKEN_ON_THE_BONE, Section.COOK,0,0,0, R.drawable.kurczak1),
-        ProductModel("Wings", 20*60, 0.01, 1.2, ProductType.HOTWING, Section.COOK,0,0,0, R.drawable.kurczak1),
+        ProductModel("Wings", 7*60, 0.01, 1.2, ProductType.HOTWING, Section.COOK,0,0,0, R.drawable.kurczak1),
         ProductModel("Strips", 20*60, 0.01, 1.2, ProductType.MINI_FILLET, Section.COOK,0,0,0, R.drawable.kurczak1),
         ProductModel("Filets", 20*60, 0.01, 1.2, ProductType.FILLET, Section.COOK,0,0,0, R.drawable.kurczak1),
         ProductModel("Zingers", 20*60, 0.01, 1.2, ProductType.ZINGER, Section.COOK,0,0,0, R.drawable.kurczak1),
