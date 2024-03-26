@@ -4,5 +4,7 @@ enum class ProductStatus {
     PREPARATION,
     READY,
     NEARLY_EXPIRY,
-    WASTE
+    WASTE,
+    SOLD,
+    TOTAL
 }

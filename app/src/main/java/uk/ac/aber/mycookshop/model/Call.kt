@@ -1,7 +1,5 @@
 package uk.ac.aber.mycookshop.model
 
-import uk.ac.aber.mycookshop.hardcodedData.ProductModel
-
 class Call(
     val id: Int,
 //    val time: Long,           nie wiem jak dodac

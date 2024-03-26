@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.delay
+import uk.ac.aber.mycookshop.model.MultiplierEnum
 import uk.ac.aber.mycookshop.ui.clock.model.GameTime
 import uk.ac.aber.mycookshop.viewModel.ProductionViewModel
 
@@ -18,11 +19,18 @@ fun Clock(productionViewModel: ProductionViewModel) {
     val gameTime by productionViewModel.gameTime.collectAsState()
     val gameTimeSeconds by productionViewModel.timer.collectAsState()
 
-    val list = listOf("Slow", "Normal", "Fast")
+    val list = listOf(MultiplierEnum.SLOW, MultiplierEnum.NORMAL, MultiplierEnum.FAST, MultiplierEnum.STOP)
+    val enumTextMap = mapOf(
+        MultiplierEnum.SLOW to "Slow",
+        MultiplierEnum.NORMAL to "Normal",
+        MultiplierEnum.FAST to "Fast",
+        MultiplierEnum.STOP to "Stop"
+    )
+
+
+    val currentValue = remember { mutableStateOf(enumTextMap[MultiplierEnum.NORMAL]) }
+
     var expanded by remember { mutableStateOf(false) }
-    val currentValue = remember { mutableStateOf(list[1]) }
-
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -41,7 +49,7 @@ fun Clock(productionViewModel: ProductionViewModel) {
             modifier = Modifier
         ) {
             Text(
-                text = currentValue.value,
+                text = currentValue.value ?: "",
                 modifier = Modifier
                     .clickable { expanded = !expanded }
             )
@@ -51,13 +59,14 @@ fun Clock(productionViewModel: ProductionViewModel) {
             ) {
                 list.forEach { it ->
                     DropdownMenuItem(
+
                         text = { Text(
-                            text = it,
+                            text = enumTextMap[it] ?: "",
                             textAlign = TextAlign.End
                         ) },
                         onClick = {
                             productionViewModel.changeMultiplier(it)
-                            currentValue.value = it
+                            currentValue.value = enumTextMap[it]
                             expanded = false
 
                         }

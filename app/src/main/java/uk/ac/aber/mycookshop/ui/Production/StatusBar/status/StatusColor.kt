@@ -32,6 +32,16 @@ fun getStatusColors(status: ProductStatus): Quadruple<Color, Color, Color, Strin
             backgroundColor = statusColor.copy(alpha = 0.3f) // Tło z 20% przezroczystości
             statusText = "Preparing"
         }
+        ProductStatus.SOLD -> {
+            statusColor = Color(0xFF110368) // Fioletowy
+            backgroundColor = statusColor.copy(alpha = 0.3f) // Tło z 20% przezroczystości
+            statusText = "Preparing"
+        }
+        ProductStatus.TOTAL -> {
+            statusColor = Color(0xFF110368) // Fioletowy
+            backgroundColor = statusColor.copy(alpha = 0.3f) // Tło z 20% przezroczystości
+            statusText = "Preparing"
+        }
     }
 
     return Quadruple(statusColor, backgroundColor, statusColor, statusText)

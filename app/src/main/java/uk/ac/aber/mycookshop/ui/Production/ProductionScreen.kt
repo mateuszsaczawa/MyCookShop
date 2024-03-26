@@ -14,7 +14,7 @@ import androidx.navigation.NavHostController
 import uk.ac.aber.mycookshop.clock.Clock
 import uk.ac.aber.mycookshop.hardcodedData.OrderList
 import uk.ac.aber.mycookshop.hardcodedData.ProductList.productList
-import uk.ac.aber.mycookshop.hardcodedData.ProductModel
+import uk.ac.aber.mycookshop.model.ProductModel
 import uk.ac.aber.mycookshop.ui.navigation.TopLevelScaffold
 import uk.ac.aber.mycookshop.ui.Production.ProductRows
 import uk.ac.aber.mycookshop.ui.Production.WasteBoard

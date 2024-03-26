@@ -19,15 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import uk.ac.aber.mycookshop.hardcodedData.ProductModel
-import uk.ac.aber.mycookshop.model.CallQueue
+import uk.ac.aber.mycookshop.model.ProductModel
+import uk.ac.aber.mycookshop.model.ProductStatus
 import uk.ac.aber.mycookshop.ui.theme.AutoResizedText
 import uk.ac.aber.mycookshop.ui.theme.light_productionBox
 import uk.ac.aber.mycookshop.viewModel.ProductionViewModel
@@ -43,13 +42,23 @@ fun ProductRow(
 
     val focusManager = LocalFocusManager.current
 
-    val callQueue = CallQueue
+    val queueProduct = productionViewModel.queueProductMap[product.type]?.collectAsState()
+
+//    val totalProduct by remember {
+//        productionViewModel.call
+//    }
+
+    val totalAmount = productionViewModel.totalAmountList.value[Pair(product.type, ProductStatus.TOTAL)]
+    val onHandAmount = productionViewModel.totalAmountList.value[Pair(product.type, ProductStatus.READY)]
+    val soldAmount = productionViewModel.totalAmountList.value[Pair(product.type, ProductStatus.SOLD)]
+    val wasteAmount = productionViewModel.totalAmountList.value[Pair(product.type, ProductStatus.WASTE)]
+
 
     Column(modifier = Modifier
         .fillMaxWidth()
         .border(width = 3.dp, color = Color.Black, shape = RoundedCornerShape(10.dp))
         .background(color = light_productionBox, shape = RoundedCornerShape(10.dp))
-        .padding( end = 2.dp, top = 8.dp, bottom = 8.dp),
+        .padding(end = 2.dp, top = 8.dp, bottom = 8.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -67,7 +76,7 @@ fun ProductRow(
                 )
 //                Spacer(modifier = Modifier.width(5.dp))
                 AutoResizedText(
-                    text = ": 0"
+                    text = ": " + onHandAmount.toString()
                 )
             }
             Spacer(modifier = Modifier.weight(0.05f))
@@ -93,8 +102,8 @@ fun ProductRow(
 
                                 productionViewModel.addNewCall(product, callAmount)
                                 focusManager.clearFocus()
-                                callAmount.toString()
-
+//                                callAmount.toString()
+                                callAmount = 0
                         },
 
                         )
@@ -115,6 +124,8 @@ fun ProductRow(
                         .width(70.dp)
                         .wrapContentHeight()
                         .clickable {
+
+                            productionViewModel.testowaFunkcjaPrintln(product.type)
                             productionViewModel.addNewCall(product, callAmount)
 
                             focusManager.clearFocus()
@@ -168,7 +179,7 @@ fun ProductRow(
                     )
                     Spacer(modifier = Modifier.width(5.dp))
                     Text(
-                        text = "0",
+                        text = soldAmount.toString(),
                         color = Color.Green)
                 }
                 Row(modifier = Modifier) {
@@ -178,14 +189,14 @@ fun ProductRow(
                     )
                     Spacer(modifier = Modifier.width(5.dp))
                     Text(
-                        text = "0",
+                        text = wasteAmount.toString(),
                         color = Color.Red
                     )
                 }
                 Row(modifier = Modifier) {
                     Text(text = "Total:")
                     Spacer(modifier = Modifier.width(5.dp))
-                    Text(text = "0")
+                    Text(text = totalAmount.toString())
                 }
             }
 

@@ -32,7 +32,7 @@ fun CallItem(call: Call, productionViewModel: ProductionViewModel) {
 //    }
 
 
-    val callTime = productionViewModel.callTimeMap[call]?.collectAsState()
+    val callTime = productionViewModel. callTimeMap[call]?.collectAsState()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -56,6 +56,5 @@ fun CallItem(call: Call, productionViewModel: ProductionViewModel) {
         }
         Spacer(modifier = Modifier.width(5.dp))
         Text(text = secondsToTimeCall(callTime?.value))
-        println("siema"+callTime?.value)
     }
 }

@@ -1,4 +1,4 @@
-package uk.ac.aber.mycookshop.hardcodedData
+package uk.ac.aber.mycookshop.model
 
 import uk.ac.aber.mycookshop.model.ProductType
 import uk.ac.aber.mycookshop.model.Section
@@ -11,6 +11,7 @@ data class ProductModel(
     val type: ProductType,
     val section: Section,
     var total: Int = 0,
+    var onHand: Int = 0,
     var waste: Int = 0,
     var sold: Int = 0,
     val image: Int

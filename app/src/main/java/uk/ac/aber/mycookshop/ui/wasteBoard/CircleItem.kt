@@ -15,7 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import uk.ac.aber.mycookshop.hardcodedData.ProductModel
+import uk.ac.aber.mycookshop.model.ProductModel
 
 @Composable
 fun CircleItem(product : ProductModel) {
