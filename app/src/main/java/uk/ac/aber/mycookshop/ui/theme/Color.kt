@@ -3,13 +3,13 @@ package uk.ac.aber.mycookshop.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val light_primary = Color(0xFF740001) //deep red
-val light_background = Color(0xFFFFFFFF) // white
-val light_productionBox = Color(0xFFC0A080) // light gold
+val light_background = Color(0xFFC0A080) // white
+val light_productionBox = Color(0xFFFFFFFF) // light gold
 val light_border = Color(0xFF000000)  //black
 
 val dark_primary = Color(0xFF740001) //deep red
-val dark_background = Color(0xFFFFFFFF) // white
-val dark_productionBox = Color(0xFFC0A080) // light gold
+val dark_background = Color(0xFFC0A080) // white
+val dark_productionBox = Color(0xFFFFFFFF) // light gold
 val dark_border = Color(0xFF000000)  //black
 
 //useless

@@ -5,7 +5,8 @@ import uk.ac.aber.mycookshop.model.Section
 
 data class ProductModel(
     val name: String,
-    val cookingTimeInSeconds: Long,
+    val cookingTimeInSeconds: Int,
+    val expiryTimeInSeconds: Int,
     val cost: Double,
     val price: Double,
     val type: ProductType,

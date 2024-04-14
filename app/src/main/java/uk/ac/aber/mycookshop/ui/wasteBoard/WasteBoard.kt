@@ -17,10 +17,13 @@ import androidx.compose.ui.unit.dp
 import uk.ac.aber.mycookshop.hardcodedData.ProductList.productList
 import uk.ac.aber.mycookshop.model.BottomBorderShape
 import uk.ac.aber.mycookshop.model.TopBorderShape
+import uk.ac.aber.mycookshop.viewModel.ProductionViewModel
 
 
 @Composable
-fun WasteBoard() {
+fun WasteBoard(
+    productionViewModel: ProductionViewModel
+) {
     var isExpanded by remember { mutableStateOf(false) }
 
     Column(
@@ -48,7 +51,7 @@ fun WasteBoard() {
 
         ) {
             for (i in 0 until 5) {
-                CircleItem(productList[i])
+                CircleItem(productionViewModel, productList[i])
             }
 
             // Przycisk rozwijania listy
@@ -102,7 +105,7 @@ fun WasteBoard() {
 
             ) {
                 remainingItems1.forEach { rowItems ->
-                    CircleItem(rowItems)
+                    CircleItem(productionViewModel, rowItems)
                 }
             }
 
@@ -117,7 +120,7 @@ fun WasteBoard() {
 
             ) {
                 remainingItems2.forEach { rowItems ->
-                    CircleItem(rowItems)
+                    CircleItem(productionViewModel, rowItems)
 
                 }
             }

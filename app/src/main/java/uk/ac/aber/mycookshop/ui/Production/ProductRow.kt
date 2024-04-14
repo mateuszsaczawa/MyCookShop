@@ -42,7 +42,8 @@ fun ProductRow(
 
     val focusManager = LocalFocusManager.current
 
-    val queueProduct = productionViewModel.queueProductMap[product.type]?.collectAsState()
+//    val queueProduct = productionViewModel.queueProductMap[product.type]?.collectAsState()
+
 
 //    val totalProduct by remember {
 //        productionViewModel.call
@@ -125,7 +126,6 @@ fun ProductRow(
                         .wrapContentHeight()
                         .clickable {
 
-                            productionViewModel.testowaFunkcjaPrintln(product.type)
                             productionViewModel.addNewCall(product, callAmount)
 
                             focusManager.clearFocus()

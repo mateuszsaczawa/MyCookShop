@@ -19,6 +19,25 @@ object CallQueue {
         return queue.filter { it.product.type == productType }
     }
 
+    // Usuwa wybrany call i zwraca true jezeli sie udalo i false jezeli nie odnalazl takiego calla
+    fun removeCall(call: Call): Boolean {
+        return queue.remove(call)
+    }
+
+    fun removeByProductType (type: ProductType): Call? {
+        val oldestCall = queue.firstOrNull { it.product.type == type }
+
+        if(oldestCall != null) {
+            queue.remove(oldestCall)
+        }
+        return oldestCall
+    }
+
+        fun getOldestCallByType(type: ProductType): Call {
+
+            val oldestCall = queue.first { it.product.type == type }
+        return oldestCall ?: Call(-1, ProductModel("",0,0,0.0,0.0,ProductType.BACON, Section.FRONT,0,0,0, 0, 0),0, ProductStatus.ERROR)
+    }
     // Remove and return the first call from the queue.
     fun dequeue(): Call? {
         return queue.poll()

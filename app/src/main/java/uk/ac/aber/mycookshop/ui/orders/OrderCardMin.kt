@@ -10,8 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import uk.ac.aber.mycookshop.hardcodedData.Order
+import uk.ac.aber.mycookshop.model.order.Order
 
 @Composable
 fun OrderCardMin(order: Order) {
@@ -27,18 +26,27 @@ fun OrderCardMin(order: Order) {
             modifier = Modifier
                 .padding(3.dp)
         ) {
-            order.items.forEach { index ->
+            order.products.forEach { item ->
                 item {
-                    Text(
-                        text = index,
-                        modifier = Modifier
-                            .padding(top = 1.dp),
-                        fontSize = 12.sp
-                    )
+                    if (item.amount != 0) {
+                        Text(text = "x${item.amount} ${item.name}", modifier = Modifier.padding(top = 4.dp))
+                    }
                 }
 
-                
+
             }
+//            order.items.forEach { index ->
+//                item {
+//                    Text(
+//                        text = index,
+//                        modifier = Modifier
+//                            .padding(top = 1.dp),
+//                        fontSize = 12.sp
+//                    )
+//                }
+//
+//
+//            }
         }
     }
 }

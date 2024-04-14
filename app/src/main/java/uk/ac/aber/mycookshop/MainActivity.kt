@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,9 +28,6 @@ class MainActivity : AppCompatActivity() {
             MyCookShopTheme(dynamicColor = false) {
 
                 val productionViewModel = viewModel<ProductionViewModel>()
-//                    remember {
-//                    viewModel<ProductionViewModel>()
-//                }
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -51,7 +49,7 @@ private fun BuildNavigationGraph(
         navController = navController,
         startDestination = Navig.Cook.route
     ) {
-        composable(Navig.Orders.route) { OrderScreen(navController) }
+        composable(Navig.Orders.route) { OrderScreen(productionViewModel, navController) }
         composable(Navig.Cook.route) {
                 ProductionScreen(navController, productionViewModel, "cook") }
         composable(Navig.Mid.route) { ProductionScreen(navController, productionViewModel,"mid") }

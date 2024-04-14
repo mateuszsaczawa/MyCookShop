@@ -15,7 +15,7 @@ import uk.ac.aber.mycookshop.viewModel.ProductionViewModel
 
 
 @Composable
-fun Clock(productionViewModel: ProductionViewModel) {
+fun GameClockComposable(productionViewModel: ProductionViewModel) {
     val gameTime by productionViewModel.gameTime.collectAsState()
     val gameTimeSeconds by productionViewModel.timer.collectAsState()
 
