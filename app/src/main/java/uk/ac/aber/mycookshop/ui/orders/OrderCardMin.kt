@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import uk.ac.aber.mycookshop.model.order.Order
+import uk.ac.aber.mycookshop.ui.orders.model.Order
 
 @Composable
 fun OrderCardMin(order: Order) {

@@ -25,8 +25,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import uk.ac.aber.mycookshop.model.ProductModel
-import uk.ac.aber.mycookshop.model.ProductStatus
+import uk.ac.aber.mycookshop.ui.Production.model.ProductModel
+import uk.ac.aber.mycookshop.ui.Production.model.ProductStatus
 import uk.ac.aber.mycookshop.ui.theme.AutoResizedText
 import uk.ac.aber.mycookshop.ui.theme.light_productionBox
 import uk.ac.aber.mycookshop.viewModel.ProductionViewModel
@@ -38,7 +38,7 @@ fun ProductRow(
     product: ProductModel
 ) {
     var isExpanded by remember { mutableStateOf(false) }
-    var callAmount by remember { mutableStateOf(0) }
+    var newCallAmount by remember { mutableStateOf(0) }
 
     val focusManager = LocalFocusManager.current
 
@@ -50,9 +50,12 @@ fun ProductRow(
 //    }
 
     val totalAmount = productionViewModel.totalAmountList.value[Pair(product.type, ProductStatus.TOTAL)]
-    val onHandAmount = productionViewModel.totalAmountList.value[Pair(product.type, ProductStatus.READY)]
     val soldAmount = productionViewModel.totalAmountList.value[Pair(product.type, ProductStatus.SOLD)]
     val wasteAmount = productionViewModel.totalAmountList.value[Pair(product.type, ProductStatus.WASTE)]
+    val onHandAmountReady = productionViewModel.totalAmountList.value[Pair(product.type, ProductStatus.READY)]
+    val onHandAmountWastable = productionViewModel.totalAmountList.value[Pair(product.type, ProductStatus.WASTABLE)]
+    val onHandAmount = (onHandAmountReady?.toInt() ?: 0) + (onHandAmountWastable?.toInt() ?: 0)
+
 
 
     Column(modifier = Modifier
@@ -83,10 +86,10 @@ fun ProductRow(
             Spacer(modifier = Modifier.weight(0.05f))
 
             TextField(
-                value = if (callAmount == 0) "" else callAmount.toString(),
+                value = if (newCallAmount == 0) "" else newCallAmount.toString(),
                 onValueChange = { value ->
                     val newValue = value.filter { it.isDigit() }.take(2) // Ograniczenie do dwóch cyfr
-                    callAmount = newValue.toIntOrNull() ?: 0
+                    newCallAmount = newValue.toIntOrNull() ?: 0
                 },
                 singleLine = true,
                     modifier = Modifier
@@ -101,10 +104,10 @@ fun ProductRow(
                     keyboardActions = KeyboardActions(
                         onDone = {
 
-                                productionViewModel.addNewCall(product, callAmount)
+                                productionViewModel.addNewCall(product, newCallAmount)
                                 focusManager.clearFocus()
 //                                callAmount.toString()
-                                callAmount = 0
+                                newCallAmount = 0
                         },
 
                         )
@@ -126,10 +129,10 @@ fun ProductRow(
                         .wrapContentHeight()
                         .clickable {
 
-                            productionViewModel.addNewCall(product, callAmount)
+                            productionViewModel.addNewCall(product, newCallAmount)
 
                             focusManager.clearFocus()
-                            callAmount = 0
+                            newCallAmount = 0
                         },
                     textAlign = TextAlign.Center
                 )

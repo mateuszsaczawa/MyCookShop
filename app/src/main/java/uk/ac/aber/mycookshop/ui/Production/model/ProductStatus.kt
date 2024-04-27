@@ -1,9 +1,9 @@
-package uk.ac.aber.mycookshop.model
+package uk.ac.aber.mycookshop.ui.Production.model
 
 enum class ProductStatus {
     PREPARATION,
     READY,
-//    NEARLY_EXPIRY,
+    NEARLY_EXPIRY,
     WASTABLE,
     WASTE,
     SOLD,

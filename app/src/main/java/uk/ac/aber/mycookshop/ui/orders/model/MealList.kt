@@ -1,6 +1,6 @@
-package uk.ac.aber.mycookshop.model.order
+package uk.ac.aber.mycookshop.ui.orders.model
 
-import uk.ac.aber.mycookshop.model.ProductType
+import uk.ac.aber.mycookshop.ui.Production.model.ProductType
 
 object MealList {
 

@@ -1,8 +1,8 @@
 package uk.ac.aber.mycookshop.hardcodedData
 
 import uk.ac.aber.mycookshop.R
-import uk.ac.aber.mycookshop.model.ProductModel
-import uk.ac.aber.mycookshop.model.ProductType
+import uk.ac.aber.mycookshop.ui.Production.model.ProductModel
+import uk.ac.aber.mycookshop.ui.Production.model.ProductType
 import uk.ac.aber.mycookshop.model.Section
 
 object ProductList {

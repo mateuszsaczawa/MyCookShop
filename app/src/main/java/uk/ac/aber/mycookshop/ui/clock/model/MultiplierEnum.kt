@@ -1,4 +1,4 @@
-package uk.ac.aber.mycookshop.model
+package uk.ac.aber.mycookshop.ui.clock.model
 
 enum class MultiplierEnum {
     SLOW,

@@ -1,4 +1,4 @@
-package uk.ac.aber.mycookshop.model
+package uk.ac.aber.mycookshop.ui.navigation
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

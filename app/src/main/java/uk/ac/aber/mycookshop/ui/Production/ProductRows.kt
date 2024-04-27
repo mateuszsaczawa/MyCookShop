@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import uk.ac.aber.mycookshop.model.ProductModel
+import uk.ac.aber.mycookshop.ui.Production.model.ProductModel
 import uk.ac.aber.mycookshop.viewModel.ProductionViewModel
 
 

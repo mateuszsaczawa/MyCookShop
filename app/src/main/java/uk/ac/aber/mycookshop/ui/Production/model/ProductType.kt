@@ -1,4 +1,4 @@
-package uk.ac.aber.mycookshop.model
+package uk.ac.aber.mycookshop.ui.Production.model
 
 enum class ProductType {
     CHICKEN_ON_THE_BONE,

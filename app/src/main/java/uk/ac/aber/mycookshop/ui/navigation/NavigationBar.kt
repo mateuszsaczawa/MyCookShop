@@ -8,7 +8,6 @@ import androidx.compose.material.icons.outlined.List
 import androidx.compose.material.icons.outlined.OutdoorGrill
 import androidx.compose.material.icons.outlined.Receipt
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,8 +20,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.mycookshop.R
-import uk.ac.aber.mycookshop.model.IconGroup
-import uk.ac.aber.mycookshop.ui.navigation.screens
 import uk.ac.aber.mycookshop.ui.theme.MyCookShopTheme
 
 

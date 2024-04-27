@@ -1,6 +1,5 @@
-package uk.ac.aber.mycookshop.model.order
+package uk.ac.aber.mycookshop.ui.orders.model
 
-import java.text.DecimalFormat
 import java.util.*
 import kotlin.random.Random
 
@@ -9,7 +8,8 @@ class Order(
     val id: Int,
     val timeAppear: Long,
     val dayAppear: Int,
-    val isServiced: Boolean,
+    var status: OrderStatus,
+    var isServiced: Boolean,
     val serviceTime: Int = 0,
     var cost: Double,
     var products: LinkedList<OrderItem>
@@ -28,17 +28,19 @@ class Order(
         isServiced: Boolean,
         serviceTime: Int,
         products: LinkedList<OrderItem>
-    ) : this(generateNextId(), timeAppear, dayAppear, isServiced, serviceTime, 0.0, products) {
+    ) : this(generateNextId(), timeAppear, dayAppear, OrderStatus.PENDING, isServiced, serviceTime, 0.0, products) {
         var totalCost = 0.0
         for (item in products) {
             totalCost += item.price
-            println("wardega totalCost: " + totalCost)
 
         }
 
         this.cost = totalCost
     }
 
+    fun orderServiced() {
+        isServiced = true
+    }
 
 
     fun generateRandomOrder() : Int {

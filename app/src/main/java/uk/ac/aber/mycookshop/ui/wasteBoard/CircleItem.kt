@@ -16,8 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import uk.ac.aber.mycookshop.model.ProductModel
-import uk.ac.aber.mycookshop.model.ProductStatus
+import uk.ac.aber.mycookshop.ui.Production.model.ProductModel
+import uk.ac.aber.mycookshop.ui.Production.model.ProductStatus
 import uk.ac.aber.mycookshop.viewModel.ProductionViewModel
 
 @Composable
@@ -27,7 +27,8 @@ fun CircleItem(
 ) {
 
     val readyAmount = productionViewModel.totalAmountList.value[Pair(product.type, ProductStatus.READY)]
-
+    val wastableAmount = productionViewModel.totalAmountList.value[Pair(product.type, ProductStatus.WASTABLE)]
+    val allAvailableAmount = (readyAmount?.toInt() ?: 0) + (wastableAmount?.toInt() ?: 0)
     Column(modifier = Modifier
         .width(60.dp))
     {
@@ -52,7 +53,7 @@ fun CircleItem(
                 contentScale = ContentScale.Crop
             )
             Text(
-                text = readyAmount.toString(),
+                text = allAvailableAmount.toString(),
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 color = Color.White,

@@ -1,5 +1,6 @@
-package uk.ac.aber.mycookshop.model
+package uk.ac.aber.mycookshop.ui.Production.model
 
+import uk.ac.aber.mycookshop.model.Section
 import java.util.*
 
 object CallQueue {
@@ -36,7 +37,9 @@ object CallQueue {
         fun getOldestCallByType(type: ProductType): Call {
 
             val oldestCall = queue.first { it.product.type == type }
-        return oldestCall ?: Call(-1, ProductModel("",0,0,0.0,0.0,ProductType.BACON, Section.FRONT,0,0,0, 0, 0),0, ProductStatus.ERROR)
+        return oldestCall ?: Call(-1, ProductModel("",0,0,0.0,0.0,
+            ProductType.BACON, Section.FRONT,0,0,0, 0, 0),0, ProductStatus.ERROR
+        )
     }
     // Remove and return the first call from the queue.
     fun dequeue(): Call? {

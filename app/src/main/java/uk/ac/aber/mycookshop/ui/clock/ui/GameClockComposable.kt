@@ -8,8 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
-import uk.ac.aber.mycookshop.model.MultiplierEnum
+import uk.ac.aber.mycookshop.ui.clock.model.MultiplierEnum
 import uk.ac.aber.mycookshop.ui.clock.model.GameTime
 import uk.ac.aber.mycookshop.viewModel.ProductionViewModel
 
@@ -20,6 +21,8 @@ fun GameClockComposable(productionViewModel: ProductionViewModel) {
     val gameTimeSeconds by productionViewModel.timer.collectAsState()
 
     val list = listOf(MultiplierEnum.SLOW, MultiplierEnum.NORMAL, MultiplierEnum.FAST, MultiplierEnum.STOP)
+    val currentValue by productionViewModel.currentMultiplier.collectAsState()
+
     val enumTextMap = mapOf(
         MultiplierEnum.SLOW to "Slow",
         MultiplierEnum.NORMAL to "Normal",
@@ -27,12 +30,13 @@ fun GameClockComposable(productionViewModel: ProductionViewModel) {
         MultiplierEnum.STOP to "Stop"
     )
 
-
-    val currentValue = remember { mutableStateOf(enumTextMap[MultiplierEnum.NORMAL]) }
+    var previousMultiplier by remember { mutableStateOf(currentValue) }
+    var clickedOnce by remember { mutableStateOf(false) }
 
     var expanded by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
+            .padding(bottom = 4.dp)
             .fillMaxWidth()
             .wrapContentHeight(),
         horizontalArrangement = Arrangement.SpaceAround
@@ -42,14 +46,25 @@ fun GameClockComposable(productionViewModel: ProductionViewModel) {
             textAlign = TextAlign.Start)
         Text(
             text = secondsToTime(gameTimeSeconds),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.clickable {
+                if(!clickedOnce) {
+                    previousMultiplier = currentValue
+                    clickedOnce = true
+                    productionViewModel.changeMultiplier(MultiplierEnum.STOP)
+                } else {
+                    productionViewModel.changeMultiplier(previousMultiplier)
+                    clickedOnce = false
+                }
+
+            }
         )
         // Dropdown menu for Multiplier
         Box(
             modifier = Modifier
         ) {
             Text(
-                text = currentValue.value ?: "",
+                text = enumTextMap[currentValue] ?: "",
                 modifier = Modifier
                     .clickable { expanded = !expanded }
             )
@@ -57,18 +72,17 @@ fun GameClockComposable(productionViewModel: ProductionViewModel) {
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                list.forEach { it ->
+                list.forEach { multiplier ->
                     DropdownMenuItem(
 
                         text = { Text(
-                            text = enumTextMap[it] ?: "",
+                            text = enumTextMap[multiplier] ?: "",
                             textAlign = TextAlign.End
                         ) },
                         onClick = {
-                            productionViewModel.changeMultiplier(it)
-                            currentValue.value = enumTextMap[it]
+                            productionViewModel.changeMultiplier(multiplier)
                             expanded = false
-
+                            previousMultiplier = multiplier
                         }
                     )
                 }

@@ -1,4 +1,4 @@
-package uk.ac.aber.mycookshop.model
+package uk.ac.aber.mycookshop.ui.theme
 
 data class Quadruple<A, B, C, D>(
     val first: A,

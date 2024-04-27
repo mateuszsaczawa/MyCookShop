@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.MaterialTheme
 
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -30,7 +32,9 @@ class MainActivity : AppCompatActivity() {
                 val productionViewModel = viewModel<ProductionViewModel>()
 
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .navigationBarsPadding(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     BuildNavigationGraph(productionViewModel)
@@ -49,11 +53,18 @@ private fun BuildNavigationGraph(
         navController = navController,
         startDestination = Navig.Cook.route
     ) {
-        composable(Navig.Orders.route) { OrderScreen(productionViewModel, navController) }
+        composable(Navig.Orders.route) {
+            OrderScreen(productionViewModel, navController)
+        }
         composable(Navig.Cook.route) {
-                ProductionScreen(navController, productionViewModel, "cook") }
-        composable(Navig.Mid.route) { ProductionScreen(navController, productionViewModel,"mid") }
-        composable(Navig.Front.route) { ProductionScreen(navController, productionViewModel,"front") }
+            ProductionScreen(navController, productionViewModel, "cook")
+        }
+        composable(Navig.Mid.route) {
+            ProductionScreen(navController, productionViewModel,"mid")
+        }
+        composable(Navig.Front.route) {
+            ProductionScreen(navController, productionViewModel,"front")
+        }
 
         }
     }

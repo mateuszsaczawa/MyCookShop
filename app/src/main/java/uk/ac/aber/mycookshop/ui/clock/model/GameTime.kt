@@ -4,7 +4,7 @@ package uk.ac.aber.mycookshop.ui.clock.model
 class GameTime(
     private var _day: Int = 1,
     private var _multiplier: Float = 1.0F,
-    private var _playTimeSeconds: Long = 26100
+    private var _playTimeSeconds: Long = 28800
 ) {
 
     // Getter dla całego obiektu GameTime

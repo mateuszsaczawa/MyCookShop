@@ -9,11 +9,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import uk.ac.aber.mycookshop.model.Call
-import uk.ac.aber.mycookshop.model.ProductStatus
+import uk.ac.aber.mycookshop.ui.Production.model.Call
+import uk.ac.aber.mycookshop.ui.Production.model.ProductStatus
 import uk.ac.aber.mycookshop.ui.Production.StatusBar.status.getStatusColors
-import uk.ac.aber.mycookshop.ui.Production.secondsToTimeCall
+import uk.ac.aber.mycookshop.ui.Production.secondsToTimer
 import uk.ac.aber.mycookshop.viewModel.ProductionViewModel
 
 @Composable
@@ -26,35 +27,49 @@ fun CallItem(call: Call, productionViewModel: ProductionViewModel) {
 //    val isWastableFlow = productionViewModel.isWastable[call]
 
 
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(4.dp),
-            horizontalArrangement = Arrangement.SpaceAround
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = call.ilosc.toString())
-            Spacer(modifier = Modifier.width(5.dp))
+
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = call.ilosc.toString(),
+                modifier = Modifier
+                    .weight(1f)
+                    .wrapContentWidth(Alignment.Start)
+            )
+
             Box(
                 modifier = Modifier
+                    .weight(1f)
                     .border(2.dp, borderColor, shape = RoundedCornerShape(10.dp))
-                    .wrapContentSize()
                     .background(backgroundColor, shape = RoundedCornerShape(10.dp))
                     .padding(4.dp)
                     .clickable {
-                        if(call.status == ProductStatus.WASTABLE){
-                            productionViewModel.removeCallByCall(call)
+                        if (call.status == ProductStatus.WASTABLE) {
+                            productionViewModel.removeCallByCall(call, call.status, ProductStatus.WASTE)
                         }
-                    }
+                    },
+                contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = statusText,
                     color = textColor,
-                    modifier = Modifier.align(Alignment.Center)
+                    textAlign = TextAlign.Center
                 )
             }
-            Spacer(modifier = Modifier.width(5.dp))
-            Text(text = secondsToTimeCall(callTime?.value))
+
+            Text(
+                text = secondsToTimer(callTime?.value),
+                modifier = Modifier
+                    .weight(1f)
+                    .wrapContentWidth(Alignment.End)
+
+            )
+            Spacer(modifier = Modifier.width(4.dp))
         }
 }
 

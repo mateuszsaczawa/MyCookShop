@@ -1,6 +1,5 @@
-package uk.ac.aber.mycookshop.model
+package uk.ac.aber.mycookshop.ui.Production.model
 
-import uk.ac.aber.mycookshop.model.ProductType
 import uk.ac.aber.mycookshop.model.Section
 
 data class ProductModel(
