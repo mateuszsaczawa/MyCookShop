@@ -16,7 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import uk.ac.aber.mycookshop.ui.navigation.Navig
+import uk.ac.aber.mycookshop.ui.elements.navigation.Navig
 import uk.ac.aber.mycookshop.ui.screens.ProductionScreen
 import uk.ac.aber.mycookshop.ui.screens.OrderScreen
 import uk.ac.aber.mycookshop.ui.theme.MyCookShopTheme

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <string name="app_name">Moja knajpa</string>-->
-<!--    <string name="bottom_nav_cook">Kuchnia</string>-->
-<!--    <string name="bottom_nav_mid">Przystawki</string>-->
-<!--    <string name="bottom_nav_front">Desery</string>-->
+    <string name="app_name">Moja knajpa</string>
+    <string name="bottom_nav_cook">Kuchnia</string>
+    <string name="bottom_nav_mid">Przystawki</string>
+    <string name="bottom_nav_front">Desery</string>
 
 </resources>

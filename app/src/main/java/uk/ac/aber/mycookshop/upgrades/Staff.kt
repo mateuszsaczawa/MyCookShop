@@ -5,6 +5,5 @@ class Staff(
     val upgradesRatio: Int = 0,
     val upgradesTriple: Int = 100,
     val preparationTime: Int = 20,
-
 ) {
 }

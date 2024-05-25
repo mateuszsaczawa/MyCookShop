@@ -8,24 +8,24 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import uk.ac.aber.mycookshop.hardcodedData.ProductList
-import uk.ac.aber.mycookshop.ui.Production.model.ProductModel
-import uk.ac.aber.mycookshop.ui.Production.model.CallQueue.addCall
-import uk.ac.aber.mycookshop.ui.Production.model.CallQueue.removeByProductType
-import uk.ac.aber.mycookshop.ui.Production.model.CallQueue.removeCall
-import uk.ac.aber.mycookshop.ui.Production.model.Call
-import uk.ac.aber.mycookshop.ui.Production.model.ProductStatus
-import uk.ac.aber.mycookshop.ui.Production.model.ProductType
-import uk.ac.aber.mycookshop.ui.orders.model.MealList.combos
-import uk.ac.aber.mycookshop.ui.orders.model.MealList.getSize
-import uk.ac.aber.mycookshop.ui.orders.model.Order
-import uk.ac.aber.mycookshop.ui.orders.model.OrderItem
-import uk.ac.aber.mycookshop.ui.clock.model.GameTime
-import uk.ac.aber.mycookshop.ui.clock.model.MultiplierEnum
-import uk.ac.aber.mycookshop.ui.orders.model.OrderQueue
-import uk.ac.aber.mycookshop.ui.orders.model.OrderQueue.addOrder
-import uk.ac.aber.mycookshop.ui.orders.model.OrderQueue.updateStatus
-import uk.ac.aber.mycookshop.ui.orders.model.OrderStatus
+import uk.ac.aber.mycookshop.ui.elements.Production.model.ProductList
+import uk.ac.aber.mycookshop.ui.elements.Production.model.ProductModel
+import uk.ac.aber.mycookshop.ui.elements.Production.model.CallQueue.addCall
+import uk.ac.aber.mycookshop.ui.elements.Production.model.CallQueue.removeByProductType
+import uk.ac.aber.mycookshop.ui.elements.Production.model.CallQueue.removeCall
+import uk.ac.aber.mycookshop.ui.elements.Production.model.Call
+import uk.ac.aber.mycookshop.ui.elements.Production.model.ProductStatus
+import uk.ac.aber.mycookshop.ui.elements.Production.model.ProductType
+import uk.ac.aber.mycookshop.ui.elements.orders.model.MealList.combos
+import uk.ac.aber.mycookshop.ui.elements.orders.model.MealList.getSize
+import uk.ac.aber.mycookshop.ui.elements.orders.model.Order
+import uk.ac.aber.mycookshop.ui.elements.orders.model.OrderItem
+import uk.ac.aber.mycookshop.ui.elements.clock.model.GameTime
+import uk.ac.aber.mycookshop.ui.elements.clock.model.MultiplierEnum
+import uk.ac.aber.mycookshop.ui.elements.orders.model.OrderQueue
+import uk.ac.aber.mycookshop.ui.elements.orders.model.OrderQueue.addOrder
+import uk.ac.aber.mycookshop.ui.elements.orders.model.OrderQueue.updateStatus
+import uk.ac.aber.mycookshop.ui.elements.orders.model.OrderStatus
 import uk.ac.aber.mycookshop.upgrades.Staff
 import java.util.*
 import kotlin.random.Random
@@ -47,16 +47,14 @@ class ProductionViewModel : ViewModel() {
     val callTimeMap: MutableMap<Call, MutableStateFlow<Int>> = _callTimeMap//////////////////////////////////////////////////////////
 
     /*
-    koeljka z podziałem na ProductType, ktory zawiera wszystkie call dla tego rodzaju produktu
-    zmiena jest przeznaczona do okreslania statusów poszczegolnych Call z podziałem na ty produktow
-     */
+     a queue divided into ProductType, which contains all calls for this type of product
+     the change is intended to determine the status of individual Calls divided into types of products
+      */
     private val _queueProductMap = mutableMapOf<ProductType, MutableList<Call>>()
     val queueProductMap: MutableMap<ProductType, MutableList<Call>> = _queueProductMap
 
     // Production variables
-    /*
-    kolejka sledząca ile jest produktow o danym statusie
-     */
+    //a queue tracking how many products have a given status
     private val _totalAmountList = mutableStateOf<MutableMap<Pair<ProductType, ProductStatus>, Int>>(mutableMapOf())
     val totalAmountList: MutableState<MutableMap<Pair<ProductType, ProductStatus>, Int>> = _totalAmountList
 
@@ -87,15 +85,7 @@ class ProductionViewModel : ViewModel() {
     val selectedTab:StateFlow<Int> = _selectedTab.asStateFlow()
 
     private val _filteredOrders = MutableStateFlow<List<Order>>(mutableListOf())
-    val filteredOrders: StateFlow<List<Order>> = _filteredOrders                                      //.asStateFlow()
-//    val filteredOrders: StateFlow<List<Order>> = _selectedTab.combine(_orderList) { tab, orders ->
-//
-//        if (tab == 0) {
-//            orders.filter { order -> !(isOrderServiced[order.id]?.value ?: true) }
-//        } else {
-//            orders.filter { order -> isOrderServiced[order.id]?.value ?: false }
-//        }
-//    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    val filteredOrders: StateFlow<List<Order>> = _filteredOrders
 
     //first cook
     private val _productsFirstCook = mutableStateMapOf<ProductModel, Int>()
@@ -103,17 +93,14 @@ class ProductionViewModel : ViewModel() {
 
     //upgrades
     private val _staff = Staff()
-//    val staff = MutableStateFlow(_staff)
-
 
                                                                     /*
                                             Global timer section
                                                                     */
-
     init {
         startGlobalTimer()
 
-        // Inicjalizacja ilości produktów dla każdej pary (ProductType, ProductStatus)
+        // Initialization of the number of products for each pair (Product Type, Product Status)
         val initialCounts = mutableMapOf<Pair<ProductType, ProductStatus>, Int>()
         ProductType.values().forEach { productType ->
             ProductStatus.values().forEach { productStatus ->
@@ -133,10 +120,10 @@ class ProductionViewModel : ViewModel() {
 
     private fun startGlobalTimer() {
 
-        // Start głównego timera aplikacji
+        // Start the main application timer
         viewModelScope.launch {
             while (true) {
-                delay( (10 * multiplier).toLong())
+                delay( (100 * multiplier).toLong())
 
                 // Update the game day
                 if (!_isAlertDialogOpen.value && !_isStopped.value) {
@@ -198,7 +185,7 @@ class ProductionViewModel : ViewModel() {
                                              Call/ call timer/ waste section
                                                                                 */
 
-    // Metoda do dodawania nowego timera dla nowego calla
+    // Method for adding a new timer for a new call
     private fun addNewTimer(call: Call) {
 
         _callTimeMap.getOrPut(call) {
@@ -208,69 +195,40 @@ class ProductionViewModel : ViewModel() {
                 else -> 0
             })
         }
-//        val timeForTimer = when (call.status) {
-//            ProductStatus.PREPARATION -> MutableStateFlow(call.product.cookingTimeInSeconds)
-//            ProductStatus.READY -> MutableStateFlow(call.product.expiryTimeInSeconds)
-//            else -> MutableStateFlow(0)
-//        }
-//
-//        _callTimeMap[call] = timeForTimer
 
         viewModelScope.launch {
             while (_callTimeMap[call]!!.value > 0) {
-                delay((1 * multiplier).toLong())
+                delay((100 * multiplier).toLong())
                 if (!_isAlertDialogOpen.value && !_isStopped.value) {
                     _callTimeMap[call]!!.value -= 1
                 }
             }
-
             when (call.status) {
                 ProductStatus.PREPARATION -> {
+                    call.status = ProductStatus.READY
+                    _callTimeMap[call]!!.value = call.product.expiryTimeInSeconds
                     _queueProductMap[call.product.type]?.find { it == call }?.let {
                         it.status = ProductStatus.READY
                     }
-                    addToCountForProductType(call.product.type, ProductStatus.TOTAL, call.ilosc)
-                    addToCountForProductType(call.product.type, ProductStatus.READY, call.ilosc)
-                    call.status = ProductStatus.READY
+                    addToCountForProductType(call.product.type, ProductStatus.TOTAL, call.amount)
+                    addToCountForProductType(call.product.type, ProductStatus.READY, call.amount)
                     addNewTimer(call)
                 }
                 ProductStatus.READY -> {
                     call.status = ProductStatus.WASTABLE
+                    _queueProductMap[call.product.type]?.find { it == call }?.let {
+                        it.status = ProductStatus.WASTABLE
+                    }
+                    addNewTimer(call)
+                }
+                else -> {
                     _isWastable[call] = true
                 }
-                else -> {}
             }
-
-//            if(call.status == ProductStatus.PREPARATION) {
-//
-//                _queueProductMap[call.product.type]?.let {
-//                    if (it.value == call) {
-//
-//                        //set status for next (READY)
-//                        call.status = ProductStatus.READY
-//                        //Update StateFlow with new status
-//                        it.value = call
-//                    }
-//
-//                }
-//                call.status = ProductStatus.READY
-//                addToCountForProductType(call.product.type, ProductStatus.TOTAL, call.ilosc)
-//                addToCountForProductType(call.product.type, ProductStatus.READY, call.ilosc)
-//
-//                addNewTimer(call)
-//            }
-//
-//            else if(call.status == ProductStatus.READY)
-//            {
-//                _queueProductMap[call.product.type]!!.value.status = ProductStatus.WASTABLE
-//                _isWastable[call] = true
-//            }
         }
-
-
     }
 
-    // Metoda do dodawania elementów do kolejki`
+    // Method for adding items to the queue
     fun addNewCall(product: ProductModel, amount: Int) {
         if(amount != 0){
 
@@ -278,7 +236,6 @@ class ProductionViewModel : ViewModel() {
 
             val callList = _queueProductMap.getOrPut(product.type) { mutableListOf() }
             callList.add(newCall)
-//            _queueProductMap[product.type] = MutableStateFlow(newCall)
 
             _isWastable[newCall] = false
             addNewTimer(newCall)
@@ -286,7 +243,6 @@ class ProductionViewModel : ViewModel() {
             addCall(newCall)
         }
     }
-
 
     fun addToCountForProductType(productType: ProductType, productStatus: ProductStatus, amount: Int) {
         val currentCounts = _totalAmountList.value.toMutableMap()
@@ -301,11 +257,6 @@ class ProductionViewModel : ViewModel() {
         _totalAmountList.value = currentCounts
     }
 
-    fun getTotalAmountForProductTypeAndStatus(productType: ProductType, productStatus: ProductStatus): Int {
-        val totalCounts = _totalAmountList.value
-        return totalCounts[Pair(productType, productStatus)] ?: 0
-    }
-
     fun removeCallByCall(call: Call, oldStatus: ProductStatus, newStatus: ProductStatus) {
 
         val callOld = findSmallestId(call.product.type,0)
@@ -313,8 +264,8 @@ class ProductionViewModel : ViewModel() {
         if (callOld != null) {
             if (callOld.status == ProductStatus.WASTABLE) {
                 removeCall(call)
-                subtractToCountForProductType(call.product.type, oldStatus, call.ilosc)
-                addToCountForProductType(call.product.type, newStatus, call.ilosc)
+                subtractToCountForProductType(call.product.type, oldStatus, call.amount)
+                addToCountForProductType(call.product.type, newStatus, call.amount)
                 callOld.status = ProductStatus.WASTE
             }
         }
@@ -327,8 +278,8 @@ class ProductionViewModel : ViewModel() {
         if (callOld != null) {
             if (callOld.status == ProductStatus.WASTABLE){
                 removeByProductType(productType)
-                subtractToCountForProductType(callOld.product.type, ProductStatus.READY, callOld.ilosc)
-                addToCountForProductType(callOld.product.type, ProductStatus.WASTE, callOld.ilosc)
+                subtractToCountForProductType(callOld.product.type, ProductStatus.READY, callOld.amount)
+                addToCountForProductType(callOld.product.type, ProductStatus.WASTE, callOld.amount)
                 callOld.status = ProductStatus.WASTE
             }
         }
@@ -343,7 +294,7 @@ class ProductionViewModel : ViewModel() {
         return (time in 43200..50400) || (time in 61200..720000)
     }
 
-    //wygeneruj liczbe zamowien ile sie pojawi w ciagu 90 sekund
+    //generate the number of orders that will appear within 90 seconds
     fun generateOrders(peakModifier: Int){
         var randomOrderNumber = Random.nextInt(0 + peakModifier, 2 + peakModifier)
 
@@ -353,7 +304,7 @@ class ProductionViewModel : ViewModel() {
         } while (randomOrderNumber >= 0)
     }
 
-    //wygeneruj ile zestawow bedzie w zamowieniu
+    //generate how many sets will be in the order
     fun generateRandomOrder() {
         val productsInOrder = LinkedList<OrderItem>()
         var mealsNumber = Random.nextDouble(0.0, 1.0)
@@ -377,7 +328,6 @@ class ProductionViewModel : ViewModel() {
                 upgade <= 100 -> upgradedHW += 4
             }
 
-
             howManyMeals -= 1
 
         } while (howManyMeals >= 0)
@@ -392,7 +342,6 @@ class ProductionViewModel : ViewModel() {
         val currentOrders = _orderList.value.toMutableList()
         currentOrders.add(newOrder)
         _orderList.value = currentOrders
-//        _orderList.value =  _orderList.value + listOf(newOrder)
 
         addNewTimerForOrder(newOrder)
 
@@ -403,7 +352,7 @@ class ProductionViewModel : ViewModel() {
 
     }
 
-    //funkcja generujaca meal
+    //meal generating function
 
     fun generateMeal(): OrderItem {
         val mealNo = Random.nextInt(0, getSize()-1)
@@ -418,7 +367,7 @@ class ProductionViewModel : ViewModel() {
 
             viewModelScope.launch {
                 while (_orderTimeMap[order]!!.value >= 0) {
-                    delay((10 * multiplier).toLong())
+                    delay((100 * multiplier).toLong())
                     if (!_isAlertDialogOpen.value && !_isStopped.value) {
                         _orderTimeMap[order]!!.value += 1
                     }
@@ -438,12 +387,8 @@ class ProductionViewModel : ViewModel() {
         _orderProductAmount.value = currentMap
     }
 
-    //sprawdza nam czy przy pojawieniu sie zamowienia mozna odrazu przygotowac zamowienie
+    //checks whether the order can be prepared immediately when an order is placed
     private fun canBeServed(order: Order): Boolean {
-
-//        _orderProductAmount.value[order.id] //productType, ilosc
-//
-//        totalAmountList.value[Pair(order, ProductStatus.READY)]
 
         val orderNeeds = _orderProductAmount.value[order.id] ?: return false
 
@@ -461,14 +406,12 @@ class ProductionViewModel : ViewModel() {
 
     fun sellProductsFromOrder(order: Order) {
 
-        //zmienna przechowujaca co zawiera order
+        //variable with order content
         val orderContents = _orderProductAmount.value[order.id]
 
         if (orderContents == null || !canBeServed(order)) {
             return
         }
-
-
         orderContents?.forEach { (productType, amount) ->
 
             var soldAmount = amount
@@ -479,31 +422,26 @@ class ProductionViewModel : ViewModel() {
                 if(callEntry == null) break
 
                 //if it's enough products from this Call just subtract amount
-                if (callEntry.ilosc >= soldAmount) {
+                if (callEntry.amount >= soldAmount) {
 
-                    callEntry.ilosc -= soldAmount
+                    callEntry.amount -= soldAmount
                     updateProductCounts(callEntry, soldAmount)
                     soldAmount = 0
-                    if(callEntry.ilosc == 0) {
+                    if(callEntry.amount == 0) {
                         removeCallByCall(callEntry, callEntry.status, ProductStatus.SOLD)
-//                        callEntry.status = ProductStatus.SOLD
                     }
                     //if not then subtract what you can and then take next Call
                 } else {
 
-                    soldAmount -= callEntry.ilosc
-                    updateProductCounts(callEntry, callEntry.ilosc)
+                    soldAmount -= callEntry.amount
+                    updateProductCounts(callEntry, callEntry.amount)
                     removeCallByCall(callEntry, callEntry.status, ProductStatus.SOLD)
-
-//                    callEntry.status = ProductStatus.SOLD
                     whichTime++
                 }
             }
             }
             markOrderAsServiced(order)
         updateStatus(order.id, OrderStatus.SERVICED)
-
-//            _orderList.value = _orderList.value.filterNot { it == order }.toMutableList()
 
     }
     private fun updateProductCounts(call: Call, amountSold: Int) {
@@ -524,32 +462,15 @@ class ProductionViewModel : ViewModel() {
         }
 
         return eligibleCalls.elementAtOrNull(whichTime)
-//            callEntry?.let { flow ->
-//
-//                  (it.value.value.status == ProductStatus.READY || it.value.value.status == ProductStatus.WASTABLE)
-//
-//            }
-//            .sortedBy { it.value.value.id }
-//
-//        if(callEntry.size < whichTime) {
-//
-//            throw IllegalArgumentException("Not enough calls")
-//        }
-//
-//        return callEntry.elementAtOrNull(whichTime)?.value?.value
+
     }
-//                        val currentCall = _totalAmountList.value
-//                        currentCall[Pair(productType, ProductStatus.READY)]
-//                            val updatedCall = currentCall.copy(ilosc = amount)
 
     fun markOrderAsServiced(order: Order) {
         _isOrderServiced[order]?.value = true
-        println("zrobioneFunkcja")
     }
 
     fun setSelectedTab(tab: Int) {
         _selectedTab.value = tab
-//        updateFilteredOrders(tab, _orderList.value)
     }
 
     private fun updateFilteredOrders(tab: Int, orders: List<Order>): List<Order> {
@@ -558,7 +479,6 @@ class ProductionViewModel : ViewModel() {
         } else {
             orders.filter { _isOrderServiced[it]?.value ?: false }
         }
-//        _filteredOrders.value = filteredOrder.toMutableList()
     }
 
     private fun filterOrdersByStatus() {
@@ -587,15 +507,6 @@ class ProductionViewModel : ViewModel() {
 
             addNewTimer(newCall)
 
-
-//            _queueProductMap[productType.type] = MutableStateFlow(newCall)
-//
-//            _isWastable[newCall] = false
-//
-//            addToCountForProductType(productType.type, ProductStatus.READY, amount)
-//            addToCountForProductType(productType.type, ProductStatus.TOTAL, amount)
-//
-//            addNewTimer(newCall)
             addCall(newCall)
         }
     }
@@ -604,7 +515,7 @@ class ProductionViewModel : ViewModel() {
         if(_gameTime.getDay() <= 1) {
 
             ProductList.productList.forEach { product ->
-                _productsFirstCook[product] = 999
+                _productsFirstCook[product] = 99
             }
             doFirstCook()
         }
